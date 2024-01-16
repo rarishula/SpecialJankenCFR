@@ -30,7 +30,8 @@ class CustomJankenEnv(gym.Env):
         info = {}
 
         # 相手（環境）のアクション（ランダム）
-        opponent_action = np.random.choice(self.action_space)
+        opponent_action = np.random.choice(self.action_space.n)
+
 
         # チョキ対グーの場合、25%の確率でチョキの勝利
         if player_action == 1 and opponent_action == 0:
