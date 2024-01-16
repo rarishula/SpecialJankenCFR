@@ -2,11 +2,11 @@ import gym
 from gym import spaces
 import numpy as np
 
-class CustomJankenEnv(gym.Env, player1_strategy, player2_strategy):
+class CustomJankenEnv(gym.Env):
     """
     カスタムじゃんけん環境
     """
-    def __init__(self):
+    def __init__(self, player1_strategy, player2_strategy):
         super(CustomJankenEnv, self).__init__()
 
         # アクションスペース（0: グー, 1: チョキ, 2: パー）
