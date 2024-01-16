@@ -43,7 +43,9 @@ class CustomJankenEnv(gym.Env):
         # ゲーム終了の判定
         done = self.state[0] >= 5 or self.state[1] >= 5
     
-        return self.state, {'player1': reward1, 'player2': reward2}, done, info
+        self.last_rewards = {'player1': reward1, 'player2': reward2}
+
+        return self.state, self.last_rewards, done, info
 
 
     def calculate_reward(self, player1_action, player2_action):
@@ -170,6 +172,8 @@ class CustomJankenEnv(gym.Env):
         if mode != 'console':
             raise NotImplementedError()
         print(f"Score: {self.state}")
+        if hasattr(self, 'last_rewards'):
+            print(f"Player 1 Reward: {self.last_rewards['player1']}, Player 2 Reward: {self.last_rewards['player2']}")
 
 # カスタム環境のテスト
 # テスト
