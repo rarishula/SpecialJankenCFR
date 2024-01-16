@@ -30,7 +30,7 @@ class CustomJankenEnv(gym.Env):
         # 初期報酬とinfoの設定
         reward = 0
         info = {}
-        calculate_next_state()
+        self.calculate_next_state()
     
         # ゲーム終了の判定
         done = self.state[0] >= 5 or self.state[1] >= 5
