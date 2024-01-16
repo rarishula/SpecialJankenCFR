@@ -68,7 +68,7 @@ class CustomJankenEnv(gym.Env):
 # テスト
 player1_strategy = [0.4, 0.4, 0.2]  # プレイヤー1の戦略
 player2_strategy = [0.3, 0.3, 0.4]  # プレイヤー2の戦略
-env = CustomJankenEnvStrategic(player1_strategy, player2_strategy)
+env = CustomJankenEnv(player1_strategy, player2_strategy)
 
 env.reset()
 done = False
