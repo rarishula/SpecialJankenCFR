@@ -24,37 +24,32 @@ class CustomJankenEnv(gym.Env):
         self.state = np.array([0, 0])
         return self.state
 
-    def step(self, action):
-        # プレイヤーのアクション（手）を取得
-        player_action = action
+    def step(self, player_action):
         # 相手（環境）のアクション（ランダム）
-        opponent_action = self.action_space.sample()
+        opponent_action = np.random.choice(self.action_space)
 
-        # 勝敗を決定
+        # チョキ対グーの場合、25%の確率でチョキの勝利
         if player_action == 1 and opponent_action == 0:
             if np.random.rand() < 0.25:
-                # チョキの勝利（2点）
-                current_score[0] += 2
+                self.state[0] += 2  # チョキの勝利（2点）
             else:
-                # グーの勝利（1点）
-                current_score[1] += 1
+                self.state[1] += 1  # グーの勝利（1点）
         else:
             # 通常の勝敗判定
             if player_action == opponent_action:
-                reward = 0  # 引き分け
+                pass  # 引き分け、スコア変化なし
             elif (player_action == 0 and opponent_action == 1) or \
                  (player_action == 1 and opponent_action == 2) or \
                  (player_action == 2 and opponent_action == 0):
-                # プレイヤーの勝利
-                current_score[0] += 1 if player_action == 0 else 2
+                self.state[0] += 1 if player_action == 0 else 2  # プレイヤーの勝利
             else:
-                # 対戦相手の勝利
-                current_score[1] += 1 if opponent_action == 0 else 2
-    
-        # ゲーム終了の判定
-        done = current_score[0] >= 5 or current_score[1] >= 5
+                self.state[1] += 1 if opponent_action == 0 else 2  # 対戦相手の勝利
 
-        return current_score, done
+        # ゲーム終了の判定
+        done = self.state[0] >= 5 or self.state[1] >= 5
+
+        return self.state, done
+
 
     def render(self, mode='console'):
         if mode != 'console':
