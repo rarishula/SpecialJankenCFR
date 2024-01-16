@@ -31,24 +31,30 @@ class CustomJankenEnv(gym.Env):
         opponent_action = self.action_space.sample()
 
         # 勝敗を決定
-        if player_action == opponent_action:
-            reward = 0
-        elif (player_action == 0 and opponent_action == 1) or \
-             (player_action == 1 and opponent_action == 2) or \
-             (player_action == 2 and opponent_action == 0):
-            # プレイヤーの勝利
-            reward = 1 if player_action == 0 else 2
+        if player_action == 1 and opponent_action == 0:
+            if np.random.rand() < 0.25:
+                # チョキの勝利（2点）
+                current_score[0] += 2
+            else:
+                # グーの勝利（1点）
+                current_score[1] += 1
         else:
-            # プレイヤーの敗北
-            reward = -1
-
-        # スコアを更新
-        self.state += reward
-
+            # 通常の勝敗判定
+            if player_action == opponent_action:
+                reward = 0  # 引き分け
+            elif (player_action == 0 and opponent_action == 1) or \
+                 (player_action == 1 and opponent_action == 2) or \
+                 (player_action == 2 and opponent_action == 0):
+                # プレイヤーの勝利
+                current_score[0] += 1 if player_action == 0 else 2
+            else:
+                # 対戦相手の勝利
+                current_score[1] += 1 if opponent_action == 0 else 2
+    
         # ゲーム終了の判定
-        done = self.state[0] >= 5 or self.state[1] >= 5
+        done = current_score[0] >= 5 or current_score[1] >= 5
 
-        return self.state, reward, done, {}
+        return current_score, done
 
     def render(self, mode='console'):
         if mode != 'console':
