@@ -30,9 +30,16 @@ class CustomJankenEnv(gym.Env):
         # 初期報酬とinfoの設定
         reward = 0
         info = {}
-        # プレイヤー1のアクションを戦略に基づいて決定（指定されていない場合）
-        if player1_action is None:
-            player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
+        calculate_next_state()
+    
+        # ゲーム終了の判定
+        done = self.state[0] >= 5 or self.state[1] >= 5
+    
+        return self.state, reward, done, info
+
+    def calculate_next_state()
+        # プレイヤー1のアクションを戦略に基づいて決定
+        player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
     
         # プレイヤー2のアクションを戦略に基づいて決定
         player2_action = np.random.choice([0, 1, 2], p=self.player2_strategy)
@@ -58,11 +65,6 @@ class CustomJankenEnv(gym.Env):
                 self.state[0] += 1 if player1_action == 0 else 2  # プレイヤー1の勝利
             else:
                 self.state[1] += 1 if player2_action == 0 else 2  # プレイヤー2の勝利
-    
-        # ゲーム終了の判定
-        done = self.state[0] >= 5 or self.state[1] >= 5
-    
-        return self.state, reward, done, info
 
 # これが改訂された step 関数です。プレイヤーはそれぞれの戦略に基づいて行動を選択し、
 # 特殊なルール（チョキ対グーでの25%の勝率）も適切に処理されています。
