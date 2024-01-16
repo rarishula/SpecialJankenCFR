@@ -2,7 +2,7 @@ import gym
 from gym import spaces
 import numpy as np
 
-class CustomJankenEnv(gym.Env):
+class CustomJankenEnv(gym.Env, player1_strategy, player2_strategy):
     """
     カスタムじゃんけん環境
     """
@@ -24,13 +24,17 @@ class CustomJankenEnv(gym.Env):
         self.state = np.array([0, 0])
         return self.state
 
-    def step(self, player_action):
+    def step(self, player1_action=None):
         # 初期報酬とinfoの設定
         reward = 0
         info = {}
 
-        # 相手（環境）のアクション（ランダム）
-        opponent_action = np.random.choice(self.action_space.n)
+       # プレイヤー1のアクションを戦略に基づいて決定（指定されていない場合）
+        if player1_action is None:
+            player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
+
+        # プレイヤー2（対戦相手）のアクションを戦略に基づいて決定
+        player2_action = np.random.choice([0, 1, 2], p=self.player2_strategy)
 
 
         # チョキ対グーの場合、25%の確率でチョキの勝利
@@ -61,7 +65,11 @@ class CustomJankenEnv(gym.Env):
         print(f"Score: {self.state}")
 
 # カスタム環境のテスト
-env = CustomJankenEnv()
+# テスト
+player1_strategy = [0.4, 0.4, 0.2]  # プレイヤー1の戦略
+player2_strategy = [0.3, 0.3, 0.4]  # プレイヤー2の戦略
+env = CustomJankenEnvStrategic(player1_strategy, player2_strategy)
+
 env.reset()
 done = False
 while not done:
