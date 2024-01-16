@@ -25,6 +25,10 @@ class CustomJankenEnv(gym.Env):
         return self.state
 
     def step(self, player_action):
+        # 初期報酬とinfoの設定
+        reward = 0
+        info = {}
+
         # 相手（環境）のアクション（ランダム）
         opponent_action = np.random.choice(self.action_space)
 
@@ -45,11 +49,10 @@ class CustomJankenEnv(gym.Env):
             else:
                 self.state[1] += 1 if opponent_action == 0 else 2  # 対戦相手の勝利
 
-        # ゲーム終了の判定
-        done = self.state[0] >= 5 or self.state[1] >= 5
-
-        return self.state, done
-
+            # ゲーム終了の判定
+            done = self.state[0] >= 5 or self.state[1] >= 5
+    
+            return self.state, reward, done, info
 
     def render(self, mode='console'):
         if mode != 'console':
