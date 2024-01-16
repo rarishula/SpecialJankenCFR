@@ -45,6 +45,9 @@ class CustomJankenEnv(gym.Env):
     
         self.last_rewards = {'player1': reward1, 'player2': reward2}
 
+        # アクションを保存
+        self.last_actions = {'player1': player1_action, 'player2': player2_action}
+
         return self.state, self.last_rewards, done, info
 
 
@@ -172,7 +175,8 @@ class CustomJankenEnv(gym.Env):
         if mode != 'console':
             raise NotImplementedError()
         print(f"Score: {self.state}")
-        if hasattr(self, 'last_rewards'):
+        if hasattr(self, 'last_actions') and hasattr(self, 'last_rewards'):
+            print(f"Player 1 Action: {self.last_actions['player1']}, Player 2 Action: {self.last_actions['player2']}")
             print(f"Player 1 Reward: {self.last_rewards['player1']}, Player 2 Reward: {self.last_rewards['player2']}")
 
 # カスタム環境のテスト
