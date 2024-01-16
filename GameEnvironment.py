@@ -27,10 +27,16 @@ class CustomJankenEnv(gym.Env):
         return self.state
 
     def step(self, player1_action=None):
+
+        # プレイヤー1のアクションを戦略に基づいて決定
+        player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
+    
+        # プレイヤー2のアクションを戦略に基づいて決定
+        player2_action = np.random.choice([0, 1, 2], p=self.player2_strategy)
         # 初期報酬とinfoの設定
         reward = 0
         info = {}
-        self.calculate_next_state()
+        self.calculate_next_state(player1_action , player2_action)
         reward1, reward2 = self.calculate_reward(player1_action, player2_action).values()
 
     
@@ -131,12 +137,8 @@ class CustomJankenEnv(gym.Env):
 
         return {'player1': player1_reward, 'player2': player2_reward}
 
-    def calculate_next_state(self):
-        # プレイヤー1のアクションを戦略に基づいて決定
-        player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
-    
-        # プレイヤー2のアクションを戦略に基づいて決定
-        player2_action = np.random.choice([0, 1, 2], p=self.player2_strategy)
+    def calculate_next_state(self,player1_action , player2_action):
+
     
         # チョキ対グーの場合、25%の確率でチョキの勝利
         if player1_action == 1 and player2_action == 0:
