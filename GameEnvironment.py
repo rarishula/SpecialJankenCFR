@@ -37,7 +37,7 @@ class CustomJankenEnv(gym.Env):
     
         return self.state, reward, done, info
 
-    def calculate_next_state():
+    def calculate_next_state(self):
         # プレイヤー1のアクションを戦略に基づいて決定
         player1_action = np.random.choice([0, 1, 2], p=self.player1_strategy)
     
