@@ -9,7 +9,7 @@ class CFR:
                 self.player2_strategy = player2_initial_strategy
                 # Environmentインスタンスを初期化
                 self.env = Environment(self.player1_strategy, self.player2_strategy)
-                self.actions = env.actions  # 可能な行動
+                self.actions = self.env.actions  # 可能な行動
                 self.num_actions = len(self.actions)  # 行動の数
                 self.cumulative_regrets = {}  # 累積後悔値
                 self.strategy_profile = {}  # 戦略プロファイル
