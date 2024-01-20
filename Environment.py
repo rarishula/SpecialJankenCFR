@@ -1,9 +1,9 @@
 import random
 
 class Environment:
-    def __init__(self):
-        self.player1_strategy = [0.33, 0.33, 0.34]  # 例: 初期戦略
-        self.player2_strategy = [0.33, 0.33, 0.34]
+    def __init__(self,player1_strategy,player2_strategy):
+        self.player1_strategy = player1_strategy
+        self.player2_strategy = player2_strategy
         self.reset()
 
     def reset(self):
@@ -127,13 +127,13 @@ class Environment:
 
 
 # 使用例
-env = Environment()
+env = Environment([0.6,0.2,0.2],[0.33, 0.33, 0.34])
 done = False
 while not done:
     player1_strategy = [0.6,0.2,0.2]
     player2_strategy = [0.33, 0.33, 0.34]
 
-    state, reward, done, info = env.step(player1_strategy, player2_strategy)
+    state, reward, done, info = env.step()
     env.render()
 
     if done:
