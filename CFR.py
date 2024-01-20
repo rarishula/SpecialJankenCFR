@@ -112,5 +112,5 @@ player2_initial_strategy = [1/3, 1/3, 1/3]
 
 # CFRインスタンスの作成とトレーニングの実行
 cfr = CFR(player1_initial_strategy, player2_initial_strategy)
-cfr.train(1000)  # 1000反復でトレーニング
+cfr.train(1)  # 1000反復でトレーニング
 
