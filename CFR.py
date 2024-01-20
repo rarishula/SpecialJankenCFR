@@ -126,7 +126,8 @@ class CFR:
                     state = new_state
         
                     # 戦略を更新
-                    self.update_strategy(state)
+                    self.update_strategy(1,state)
+                    self.update_strategy(2,state)
 
 # 初期戦略を定義（例：各行動に均等な確率を割り当てる）
 player1_initial_strategy = [1/3, 1/3, 1/3]
