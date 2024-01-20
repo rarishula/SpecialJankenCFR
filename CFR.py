@@ -101,6 +101,8 @@ class CFR:
         
                     if done:
                         break
+                            
+                    print("Step State:", new_state)  # 各ステップの状態を表示
                     state = new_state
         
                     # 戦略を更新
