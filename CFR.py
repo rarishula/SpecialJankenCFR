@@ -89,7 +89,8 @@ class CFR:
         def play_game(self, state):
                 while True:
                     # 現在の状態における戦略を取得
-                    strategy = self.get_strategy(state)
+                    strategy1 = self.get_strategy(1,state)
+                    strategy2 = self.get_strategy(2,state)
         
                     # 戦略に基づいて行動を選択
                     action1 = self.choose_action(strategy)
