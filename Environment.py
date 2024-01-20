@@ -67,7 +67,7 @@ class Environment:
         elif (player1_action == PAPER and player2_action == ROCK) or \
              (player1_action == SCISSORS and player2_action == PAPER):
             # プレイヤー1の勝利 (パーでグーを、またはチョキでパーを)
-            return "(2, 0)
+            return (2, 0)
         elif (player1_action == ROCK and player2_action == PAPER) or \
              (player1_action == PAPER and player2_action == SCISSORS):
             # プレイヤー2の勝利 (グーでパーを、またはパーでチョキを)
@@ -83,7 +83,7 @@ class Environment:
             if random.random() < 0.25:
                 return (2, 0)
             else:
-                return  (0, 1)
+                return (0, 1)
 
     def calculate_reward(self,player1_action, player2_action, player1_score, player2_score):
         ROCK = 0  # グー
