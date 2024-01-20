@@ -60,23 +60,20 @@ class CFR:
             if player == 1:
                 actual_action = player1_action
                 opponent_action = player2_action
+                cumulative_regrets = self.player1_cumulative_regrets
             else:
                 actual_action = player2_action
                 opponent_action = player1_action
+                cumulative_regrets = self.player2_cumulative_regrets
         
             # 現在の後悔値を計算
             current_regret = self.calculate_current_regret(player, state, actual_action, player_score, opponent_action, opponent_score)
-        
-            # プレイヤーに応じた累積後悔値を取得
-            cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
         
             # 累積後悔値を更新
             if state not in cumulative_regrets:
                 cumulative_regrets[state] = [0] * self.num_actions
             cumulative_regrets[state][actual_action] += current_regret
 
-        
-        
         def update_strategy(self, state):
                 """特定の状態における戦略を更新する"""
                 # 状態に対する累積後悔値を取得
@@ -117,7 +114,8 @@ class CFR:
                     new_state, reward, done, _ = self.env.step(actions)
         
                     # 累積後悔値を更新
-                    self.update_cumulative_regrets(state, action1, action2)
+                    self.update_cumulative_regrets(1,state, action1, action2)
+                    self.update_cumulative_regrets(2,state, action1, action2)
         
                     if done:
                         break
