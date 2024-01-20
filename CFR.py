@@ -31,7 +31,7 @@ class CFR:
                     self.strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
                 return self.strategy_profile[state]
                 
-        def current_regret(self,state, actual_action, player_score, opponent_action, opponent_score):
+        def calculate_current_regret(self,state, actual_action, player_score, opponent_action, opponent_score):
                 # 実際の行動による報酬を計算
                 player_score, opponent_score = state
                 actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
