@@ -101,3 +101,12 @@ class CFR:
         
                     # 戦略を更新
                     self.update_strategy(state)
+
+# 初期戦略を定義（例：各行動に均等な確率を割り当てる）
+player1_initial_strategy = [1/3, 1/3, 1/3]
+player2_initial_strategy = [1/3, 1/3, 1/3]
+
+# CFRインスタンスの作成とトレーニングの実行
+cfr = CFR(player1_initial_strategy, player2_initial_strategy)
+cfr.train(1000)  # 1000反復でトレーニング
+
