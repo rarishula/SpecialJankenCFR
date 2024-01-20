@@ -1,5 +1,5 @@
 from Environment import Environment
-
+import random
 
 class CFR:
         
