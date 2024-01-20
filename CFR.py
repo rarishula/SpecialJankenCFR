@@ -87,13 +87,15 @@ class CFR:
                     strategy = self.get_strategy(state)
         
                     # 戦略に基づいて行動を選択
-                    action = self.choose_action(strategy)
+                    action1 = self.choose_action(strategy)
+                    action2 = self.choose_action(strategy)
+                    actions = action1,action2
         
                     # 行動を実行し、新しい状態と報酬を取得
-                    new_state, reward, done, _ = self.env.step(action)
+                    new_state, reward, done, _ = self.env.step(actions)
         
                     # 累積後悔値を更新
-                    self.update_cumulative_regrets(state, action, reward)
+                    self.update_cumulative_regrets(state, action1, reward)
         
                     if done:
                         break
