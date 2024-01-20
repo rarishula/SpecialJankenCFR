@@ -118,7 +118,7 @@ class CFR:
                 # 現在の状態における戦略を取得
                 strategy1 = self.get_strategy(1, state)
                 strategy2 = self.get_strategy(2, state)
-                print(strategy1,stategy2)
+                print(strategy1,strategy2)
         
                 # 戦略に基づいて行動を選択
                 action1 = self.choose_action(strategy1)
