@@ -48,6 +48,7 @@ class CFR:
         
         
         def update_cumulative_regrets(self, state, actual_action, opponent_action):
+                player_score, opponent_score = state
                 # 現在の後悔値を計算
                 current_regret = self.calculate_current_regret(state, actual_action, player_score, opponent_action, opponent_score)
         
