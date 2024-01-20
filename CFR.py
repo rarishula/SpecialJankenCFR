@@ -11,7 +11,8 @@ class CFR:
                 self.env = Environment(self.player1_strategy, self.player2_strategy)
                 self.actions = self.env.actions  # 可能な行動
                 self.num_actions = len(self.actions)  # 行動の数
-                self.cumulative_regrets = {}  # 累積後悔値
+                self.player1_cumulative_regrets = {}  # プレイヤー1の累積後悔値
+                self.player2_cumulative_regrets = {}  # プレイヤー2の累積後悔値
                 self.player1_strategy_profile = {}  # プレイヤー1の戦略プロファイル
                 self.player2_strategy_profile = {}  # プレイヤー2の戦略プロファイル
 
