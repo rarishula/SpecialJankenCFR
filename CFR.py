@@ -74,10 +74,12 @@ class CFR:
                 cumulative_regrets[state] = [0] * self.num_actions
             cumulative_regrets[state][actual_action] += current_regret
 
-        def update_strategy(self, state):
+        def update_strategy(self, player, state):
+                # プレイヤーに応じた累積後悔値を取得
+                cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
                 """特定の状態における戦略を更新する"""
                 # 状態に対する累積後悔値を取得
-                regrets = self.cumulative_regrets.get(state, [0] * self.num_actions)
+                regrets = cumulative_regrets.get(state, [0] * self.num_actions)
         
                 # 正の累積後悔値の合計を計算
                 positive_regret_sum = sum(max(regret, 0) for regret in regrets)
