@@ -15,9 +15,8 @@ class Environment:
     def get_state(self):
         return (self.player1_score, self.player2_score)
 
-    def step(self):
-        player1_action = self.choose_action(self.player1_strategy)
-        player2_action = self.choose_action(self.player2_strategy)
+    def step(self, actions):
+        player1_action, player2_action = actions
 
 
         reward = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
