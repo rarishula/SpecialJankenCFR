@@ -43,7 +43,7 @@ class Environment:
 
 
 
-    def choose_action(strategy):
+    def choose_action(self,strategy):
         assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
         
         ROCK = 0  # グー
@@ -53,7 +53,7 @@ class Environment:
         action = random.choices([ROCK, SCISSORS, PAPER], weights=strategy, k=1)[0]
         return action
 
-    def determine_janken_winner(player1_action, player2_action):
+    def determine_janken_winner(self,player1_action, player2_action):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
@@ -82,7 +82,7 @@ class Environment:
             else:
                 return "Player 2 Wins", (0, 1)
 
-    def calculate_reward(player1_action, player2_action, player1_score, player2_score):
+    def calculate_reward(self,player1_action, player2_action, player1_score, player2_score):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
@@ -109,7 +109,7 @@ class Environment:
         elif player1_action == SCISSORS and player2_action == ROCK:
             return 0.25 * (5 if player1_score >= 3 else 2) + 0.75 * (-5 if player2_score >= 4 else -1)
 
-    def determine_game_result(player1_score, player2_score, player1_points, player2_points):
+    def determine_game_result(self,player1_score, player2_score, player1_points, player2_points):
         new_player1_score = player1_score + player1_points
         new_player2_score = player2_score + player2_points
     
