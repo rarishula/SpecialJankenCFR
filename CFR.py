@@ -12,7 +12,8 @@ class CFR:
                 self.actions = self.env.actions  # 可能な行動
                 self.num_actions = len(self.actions)  # 行動の数
                 self.cumulative_regrets = {}  # 累積後悔値
-                self.strategy_profile = {}  # 戦略プロファイル
+                self.player1_strategy_profile = {}  # プレイヤー1の戦略プロファイル
+                self.player2_strategy_profile = {}  # プレイヤー2の戦略プロファイル
 
         def choose_action(self,strategy):
                 assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
@@ -24,12 +25,14 @@ class CFR:
                 action = random.choices([ROCK, SCISSORS, PAPER], weights=strategy, k=1)[0]
                 return action
 
-        def get_strategy(self, state):
-                """特定の状態における現在の戦略を取得または初期化する"""
-                if state not in self.strategy_profile:
-                    # すべての行動に対して均等な確率を割り当てる初期戦略を設定
-                    self.strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
-                return self.strategy_profile[state]
+
+        def get_strategy(self, player, state):
+                """特定のプレイヤーと状態における現在の戦略を取得または初期化する"""
+                strategy_profile = self.player1_strategy_profile if player == 1 else self.player2_strategy_profile
+                if state not in strategy_profile:
+                    # 初期戦略を設定
+                    strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
+                return strategy_profile[state]
                 
         def calculate_current_regret(self,state, actual_action, player_score, opponent_action, opponent_score):
                 # 実際の行動による報酬を計算
