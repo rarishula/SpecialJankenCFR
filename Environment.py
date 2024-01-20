@@ -127,14 +127,14 @@ class Environment:
 
 
 # 使用例
-env = Environment([0.6,0.2,0.2],[0.33, 0.33, 0.34])
-done = False
-while not done:
-    player1_strategy = [0.6,0.2,0.2]
-    player2_strategy = [0.33, 0.33, 0.34]
+#env = Environment([0.6,0.2,0.2],[0.33, 0.33, 0.34])
+#done = False
+#while not done:
+    #player1_strategy = [0.6,0.2,0.2]
+    #player2_strategy = [0.33, 0.33, 0.34]
 
-    state, reward, done, info = env.step()
-    env.render()
+    #state, reward, done, info = env.step()
+    #env.render()
 
-    if done:
-        print(f"Game Over! Result: {info['result']}")
+    #if done:
+        #print(f"Game Over! Result: {info['result']}")
