@@ -97,37 +97,50 @@ class CFR:
         
         
         def train(self, num_iterations):
-                for iteration in range(1, num_iterations + 1):
+            for iteration in range(1, num_iterations + 1):
+                # プレイヤー1の戦略を固定し、プレイヤー2の戦略を更新
+                for _ in range(100):
                     current_state = self.env.reset()
-                    self.play_game(current_state)
+                    self.play_game(current_state, fixed_player=1)
         
-        def play_game(self, state):
-                while True:
-                    # 現在の状態における戦略を取得
-                    strategy1 = self.get_strategy(1,state)
-                    strategy2 = self.get_strategy(2,state)
+                # プレイヤー2の戦略を固定し、プレイヤー1の戦略を更新
+                for _ in range(100):
+                    current_state = self.env.reset()
+                    self.play_game(current_state, fixed_player=2)
+
         
-                    # 戦略に基づいて行動を選択
-                    action1 = self.choose_action(strategy1)
-                    action2 = self.choose_action(strategy2)
-                    actions = action1,action2
+        def play_game(self, state, fixed_player):
+           while True:
+                # 現在の状態における戦略を取得
+                strategy1 = self.get_strategy(1, state)
+                strategy2 = self.get_strategy(2, state)
         
-                    # 行動を実行し、新しい状態と報酬を取得
-                    new_state, reward, done, _ = self.env.step(actions)
+                # 戦略に基づいて行動を選択
+                action1 = self.choose_action(strategy1)
+                action2 = self.choose_action(strategy2)
+                actions = action1, action2
         
-                    # 累積後悔値を更新
-                    self.update_cumulative_regrets(1,state, action1, action2)
-                    self.update_cumulative_regrets(2,state, action1, action2)
+                # 行動を実行し、新しい状態と報酬を取得
+                new_state, reward, done, _ = self.env.step(actions)
         
-                    if done:
-                        break
-                            
-                    print("Step State:", new_state)  # 各ステップの状態を表示
-                    state = new_state
+                # 固定されていないプレイヤーの累積後悔値を更新
+                if fixed_player != 1:
+                    self.update_cumulative_regrets(1, state, action1, action2)
+                if fixed_player != 2:
+                    self.update_cumulative_regrets(2, state, action1, action2)
         
-                    # 戦略を更新
-                    self.update_strategy(1,state)
-                    self.update_strategy(2,state)
+                if done:
+                    break
+        
+                print("Step State:", new_state)  # 各ステップの状態を表示
+                state = new_state
+        
+                # 固定されていないプレイヤーの戦略を更新
+                if fixed_player != 1:
+                    self.update_strategy(1, state)
+                if fixed_player != 2:
+                    self.update_strategy(2, state)
+
 
 # 初期戦略を定義（例：各行動に均等な確率を割り当てる）
 player1_initial_strategy = [1/3, 1/3, 1/3]
