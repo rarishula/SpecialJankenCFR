@@ -4,6 +4,7 @@ class Environment:
     def __init__(self,player1_strategy,player2_strategy):
         self.player1_strategy = player1_strategy
         self.player2_strategy = player2_strategy
+        self.actions = [0, 1, 2]  # グー、チョキ、パー
         self.reset()
 
     def reset(self):
