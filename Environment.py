@@ -42,6 +42,17 @@ class Environment:
         print(f"Player 2 Strategy: {self.player2_strategy} | Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
 
 
+
+    def choose_action(strategy):
+        assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
+        
+        ROCK = 0  # グー
+        SCISSORS = 1  # チョキ
+        PAPER = 2  # パー
+    
+        action = random.choices([ROCK, SCISSORS, PAPER], weights=strategy, k=1)[0]
+        return action
+
     def determine_janken_winner(player1_action, player2_action):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
