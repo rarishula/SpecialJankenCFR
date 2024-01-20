@@ -34,7 +34,7 @@ class Environment:
         state = self.get_state()
         reward = player1_points
         info = {"player2_reward": player2_points, "result": result}
-        print(state,reward)
+        print(state,reward,actions)
 
         return state, reward, done, info
 
