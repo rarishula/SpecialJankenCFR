@@ -31,7 +31,7 @@ class CFR:
                     self.strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
                 return self.strategy_profile[state]
                 
-            def calculate_current_regret(self, state, actual_action, player_score, opponent_action, opponent_score):
+        def calculate_current_regret(self, state, actual_action, player_score, opponent_action, opponent_score):
                 # 実際の行動による報酬を計算
                 actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
         
@@ -46,7 +46,7 @@ class CFR:
                 return current_regret
         
         
-            def update_cumulative_regrets(self, state, actual_action, player_score, opponent_action, opponent_score):
+        def update_cumulative_regrets(self, state, actual_action, player_score, opponent_action, opponent_score):
                 # 現在の後悔値を計算
                 current_regret = self.calculate_current_regret(state, actual_action, player_score, opponent_action, opponent_score)
         
@@ -56,7 +56,7 @@ class CFR:
                 self.cumulative_regrets[state][actual_action] += current_regret
         
         
-            def update_strategy(self, state):
+        def update_strategy(self, state):
                 """特定の状態における戦略を更新する"""
                 # 状態に対する累積後悔値を取得
                 regrets = self.cumulative_regrets.get(state, [0] * self.num_actions)
@@ -76,12 +76,12 @@ class CFR:
                 return new_strategy
         
         
-            def train(self, num_iterations):
+        def train(self, num_iterations):
                 for iteration in range(1, num_iterations + 1):
                     current_state = self.env.reset()
                     self.play_game(current_state)
         
-            def play_game(self, state):
+        def play_game(self, state):
                 while True:
                     # 現在の状態における戦略を取得
                     strategy = self.get_strategy(state)
