@@ -44,8 +44,24 @@ def __init__(self, player1_initial_strategy, player2_initial_strategy):
 
 
     def update_strategy(self, state):
-        """戦略プロファイルを更新する"""
-        # ...
+        """特定の状態における戦略を更新する"""
+        # 状態に対する累積後悔値を取得
+        regrets = self.cumulative_regrets.get(state, [0] * self.num_actions)
+
+        # 正の累積後悔値の合計を計算
+        positive_regret_sum = sum(max(regret, 0) for regret in regrets)
+
+        # 新しい戦略を計算
+        if positive_regret_sum > 0:
+            new_strategy = [max(regret, 0) / positive_regret_sum for regret in regrets]
+        else:
+            # すべての行動に対して均等な確率を割り当てる
+            new_strategy = [1.0 / self.num_actions] * self.num_actions
+
+        # 戦略プロファイルを更新
+        self.strategy_profile[state] = new_strategy
+        return new_strategy
+
 
     def train(self, num_iterations):
         """CFRアルゴリズムを使用して戦略をトレーニングする"""
