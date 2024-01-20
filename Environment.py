@@ -20,7 +20,7 @@ class Environment:
 
 
         reward = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
-        _,player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
+        player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
         
 
         self.player1_score += player1_points
@@ -63,27 +63,27 @@ class Environment:
     
         # 勝敗とポイントの決定
         if player1_action == player2_action:
-            return "Draw", (0, 0)
+            return (0, 0)
         elif (player1_action == PAPER and player2_action == ROCK) or \
              (player1_action == SCISSORS and player2_action == PAPER):
             # プレイヤー1の勝利 (パーでグーを、またはチョキでパーを)
-            return "Player 1 Wins", (2, 0)
+            return "(2, 0)
         elif (player1_action == ROCK and player2_action == PAPER) or \
              (player1_action == PAPER and player2_action == SCISSORS):
             # プレイヤー2の勝利 (グーでパーを、またはパーでチョキを)
-            return "Player 2 Wins", (0, 2)
+            return (0, 2)
         elif player1_action == ROCK and player2_action == SCISSORS:
             # グーとチョキの勝率判定
             if random.random() < 0.25:
-                return "Player 2 Wins", (0, 2)
+                return (0, 2)
             else:
-                return "Player 1 Wins", (1, 0)
+                return (1, 0)
         else: # player1_action == SCISSORS and player2_action == ROCK
             # チョキとグーの勝率判定
             if random.random() < 0.25:
-                return "Player 1 Wins", (2, 0)
+                return (2, 0)
             else:
-                return "Player 2 Wins", (0, 1)
+                return  (0, 1)
 
     def calculate_reward(self,player1_action, player2_action, player1_score, player2_score):
         ROCK = 0  # グー
