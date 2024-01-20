@@ -15,15 +15,15 @@ class Environment:
         return (self.player1_score, self.player2_score)
 
     def step(self, player1_strategy, player2_strategy):
-        player1_action = choose_action(player1_strategy)
-        player2_action = choose_action(player2_strategy)
+        player1_action = self.choose_action(player1_strategy)
+        player2_action = self.choose_action(player2_strategy)
 
-        player1_points, player2_points = calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
+        player1_points, player2_points = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
 
         self.player1_score += player1_points
         self.player2_score += player2_points
 
-        result, done = determine_game_result(self.player1_score, self.player2_score, player1_points, player2_points)
+        result, done = self.determine_game_result(self.player1_score, self.player2_score, player1_points, player2_points)
 
         self.last_player1_action = player1_action
         self.last_player2_action = player2_action
