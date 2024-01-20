@@ -35,31 +35,46 @@ class CFR:
                     strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
                 return strategy_profile[state]
                 
-        def calculate_current_regret(self,state, actual_action, player_score, opponent_action, opponent_score):
-                # 実際の行動による報酬を計算
-                player_score, opponent_score = state
-                actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
+        def calculate_current_regret(self, player, state, actual_action, player_score, opponent_action, opponent_score):
+            # 実際の行動による報酬を計算
+            actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
+            if player == 2:
+                actual_reward *= -1  # プレイヤー2の場合は報酬を反転
         
-                # 最大の代替報酬を計算
-                max_counterfactual_reward = max(
-                    self.env.calculate_reward(action, opponent_action, player_score, opponent_score)
-                    for action in range(self.num_actions) if action != actual_action
-                )
+            # 最大の代替報酬を計算
+            max_counterfactual_reward = max(
+                self.env.calculate_reward(action, opponent_action, player_score, opponent_score) * (-1 if player == 2 else 1)
+                for action in range(self.num_actions) if action != actual_action
+            )
         
-                # 現在の後悔値を計算
-                current_regret = max(0, max_counterfactual_reward - actual_reward)
-                return current_regret
+            # 現在の後悔値を計算
+            current_regret = max(0, max_counterfactual_reward - actual_reward)
+            return current_regret
+
         
         
-        def update_cumulative_regrets(self, state, actual_action, opponent_action):
-                player_score, opponent_score = state
-                # 現在の後悔値を計算
-                current_regret = self.calculate_current_regret(state, actual_action, player_score, opponent_action, opponent_score)
+        def update_cumulative_regrets(self, player, state, player1_action, player2_action):
+            player_score, opponent_score = state
         
-                # 累積後悔値を更新
-                if state not in self.cumulative_regrets:
-                    self.cumulative_regrets[state] = [0] * self.num_actions
-                self.cumulative_regrets[state][actual_action] += current_regret
+            # プレイヤーごとに行動を選択
+            if player == 1:
+                actual_action = player1_action
+                opponent_action = player2_action
+            else:
+                actual_action = player2_action
+                opponent_action = player1_action
+        
+            # 現在の後悔値を計算
+            current_regret = self.calculate_current_regret(player, state, actual_action, player_score, opponent_action, opponent_score)
+        
+            # プレイヤーに応じた累積後悔値を取得
+            cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
+        
+            # 累積後悔値を更新
+            if state not in cumulative_regrets:
+                cumulative_regrets[state] = [0] * self.num_actions
+            cumulative_regrets[state][actual_action] += current_regret
+
         
         
         def update_strategy(self, state):
