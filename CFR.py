@@ -31,7 +31,7 @@ class CFR:
                     self.strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
                 return self.strategy_profile[state]
                 
-        def calculate_current_regret(self, state, actual_action,  opponent_action):
+        def current_regret(self,state, actual_action, player_score, opponent_action, opponent_score):
                 # 実際の行動による報酬を計算
                 player_score, opponent_score = state
                 actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
@@ -47,7 +47,7 @@ class CFR:
                 return current_regret
         
         
-        def update_cumulative_regrets(self, state, actual_action, player_score, opponent_action, opponent_score):
+        def update_cumulative_regrets(self, state, actual_action, opponent_action):
                 # 現在の後悔値を計算
                 current_regret = self.calculate_current_regret(state, actual_action, player_score, opponent_action, opponent_score)
         
