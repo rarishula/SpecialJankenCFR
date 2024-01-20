@@ -109,8 +109,8 @@ class CFR:
                     strategy2 = self.get_strategy(2,state)
         
                     # 戦略に基づいて行動を選択
-                    action1 = self.choose_action(strategy)
-                    action2 = self.choose_action(strategy)
+                    action1 = self.choose_action(strategy1)
+                    action2 = self.choose_action(strategy2)
                     actions = action1,action2
         
                     # 行動を実行し、新しい状態と報酬を取得
