@@ -91,8 +91,12 @@ class CFR:
                     # すべての行動に対して均等な確率を割り当てる
                     new_strategy = [1.0 / self.num_actions] * self.num_actions
         
-                # 戦略プロファイルを更新
-                self.strategy_profile[state] = new_strategy
+                # プレイヤーに応じた戦略プロファイルを更新
+                if player == 1:
+                    self.player1_strategy_profile[state] = new_strategy
+                else:
+                    self.player2_strategy_profile[state] = new_strategy
+        
                 return new_strategy
         
         
