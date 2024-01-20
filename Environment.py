@@ -20,7 +20,8 @@ class Environment:
 
 
         reward = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
-        player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
+        _,player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
+        
 
         self.player1_score += player1_points
         self.player2_score += player2_points
