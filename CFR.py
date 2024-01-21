@@ -64,7 +64,16 @@ class CFR:
                         counterfactual_reward = self.env.calculate_reward(state, player1_action, action) * -1
                         current_regret_list[action] = max(0, counterfactual_reward - action_reward)
         
+                        # 現在の後悔値を計算
+            current_regret = max(0, max_counterfactual_reward - actual_reward)
+            
+            current_regret_list = [0] * self.num_actions  # 各行動に対する後悔値の初期化
+            for action in range(self.num_actions):
+                if action == actual_action:
+                    current_regret_list[action] = current_regret  # 実際に選んだ行動の後悔値を設定
+        
             return current_regret_list
+
 
 
 
