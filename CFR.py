@@ -33,10 +33,15 @@ class CFR:
 
         def get_strategy(self, player, state):
                 """特定のプレイヤーと状態における現在の戦略を取得または初期化する"""
+                original_strategy = self.player2_strategy_profile.copy()
+                
                 strategy_profile = self.player1_strategy_profile if player == 1 else self.player2_strategy_profile
                 if state not in strategy_profile:
                     # 初期戦略を設定
                     strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
+                if original_strategy != self.player2_strategy_profile:
+                    print(f"get_strategy: Strategy changed from {original_strategy} to {self.player2_strategy_profile}")
+
                 return strategy_profile[state]
                 
         def calculate_current_regret(self, player, state, actual_action, player_score, opponent_action, opponent_score):
@@ -79,6 +84,8 @@ class CFR:
             cumulative_regrets[state][actual_action] += current_regret
 
         def update_strategy(self, player, state):
+                original_strategy = self.player2_strategy_profile.copy()  # コピーを作成
+                
                 # プレイヤーに応じた累積後悔値を取得
                 cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
                 """特定の状態における戦略を更新する"""
@@ -100,6 +107,9 @@ class CFR:
                     self.player1_strategy_profile[state] = new_strategy
                 else:
                     self.player2_strategy_profile[state] = new_strategy
+
+                if original_strategy != self.player2_strategy_profile:
+                    print(f"update_strategy: Strategy changed from {original_strategy} to {self.player2_strategy_profile}")
         
                 return new_strategy
         
