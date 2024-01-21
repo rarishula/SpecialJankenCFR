@@ -40,8 +40,8 @@ class Environment:
         last_player1_action = self.last_player1_action if hasattr(self, 'last_player1_action') else 'None'
         last_player2_action = self.last_player2_action if hasattr(self, 'last_player2_action') else 'None'
         action_names = {0: 'Rock', 1: 'Scissors', 2: 'Paper'}
-        print(f" Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
-        print(f" Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
+        #print(f" Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
+        #print(f" Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
 
 
 
