@@ -84,10 +84,11 @@ class Environment:
             else:
                 return (0, 1)
 
-    def calculate_reward(self,player1_action, player2_action, player1_score, player2_score):
+    def calculate_reward(self,player1_action, player2_action):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
+        player_score, opponent_score = state
     
         # 同じ手の場合、報酬は0点
         if player1_action == player2_action:
