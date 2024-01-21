@@ -118,9 +118,6 @@ class CFR:
                     self.player2_strategy_profile[state] = new_strategy
 
                 print(f"State: {state}, Player: {player}, Cumulative Regrets: {regrets}, Positive Regret Sum: {positive_regret_sum}")
-
-                if original_strategy != self.player2_strategy_profile:
-                    print(f"update_strategy: Strategy changed from {original_strategy} to {self.player2_strategy_profile}")
         
                 return new_strategy
         
