@@ -48,27 +48,35 @@ class CFR:
                 player2_action = opponent_action
                 actual_reward = self.env.calculate_reward(state, player1_action, player2_action)
         
-                max_counterfactual_reward = max(
-                    self.env.calculate_reward(state, action, player2_action)
-                    for action in range(self.num_actions) if action != player1_action
-                )
+                best_action = None
+                max_counterfactual_reward = float('-inf')
+                for action in range(self.num_actions):
+                        if action != player1_action:
+                            counterfactual_reward = self.env.calculate_reward(state, action, player2_action)
+                            if counterfactual_reward > max_counterfactual_reward:
+                                max_counterfactual_reward = counterfactual_reward
+                                best_action = action
             else:
                 player1_action = opponent_action
                 player2_action = actual_action
                 actual_reward = self.env.calculate_reward(state, player1_action, player2_action) * -1
         
-                max_counterfactual_reward = max(
-                    self.env.calculate_reward(state, player1_action, action) * -1
-                    for action in range(self.num_actions) if action != player2_action
-                )
+                best_action = None
+                max_counterfactual_reward = float('-inf')
+                for action in range(self.num_actions):
+                        if action != player2_action:
+                            counterfactual_reward = self.env.calculate_reward(state, player1_action, action) * -1
+                            if counterfactual_reward > max_counterfactual_reward:
+                                max_counterfactual_reward = counterfactual_reward
+                                best_action = action
+
         
             current_regret = max(0, max_counterfactual_reward - actual_reward)
 
             
             current_regret_list = [0] * self.num_actions  # 各行動に対する後悔値の初期化
-            for action in range(self.num_actions):
-                if action == actual_action:
-                    current_regret_list[action] = current_regret  # 実際に選んだ行動の後悔値を設定
+            current_regret_list[best_action] = current_regret
+            
         
             return current_regret_list
 
