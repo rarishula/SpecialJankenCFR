@@ -89,7 +89,7 @@ class Environment:
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
-        player1_score, opponent1_score = state
+        player1_score, player2_score = state
     
         # 同じ手の場合、報酬は0点
         if player1_action == player2_action:
