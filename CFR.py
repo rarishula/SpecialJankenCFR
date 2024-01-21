@@ -20,12 +20,12 @@ class CFR:
 
         @property
         def player2_strategy(self):
-                return self._player2_strategy
+                return self.player2_strategy_profile
 
         @player2_strategy.setter
         def player2_strategy(self, value):
-                if value != self._player2_strategy:
-                    print(f"Player 2 strategy changed from {self._player2_strategy} to {value}")
+                if value != self.player2_strategy_profile:
+                    print(f"Player 2 strategy changed from {self.player2_strategy_profile} to {value}")
                     traceback.print_stack()  # スタックトレースを表示
                     pdb.set_trace()  # デバッグブレークポイント
 
