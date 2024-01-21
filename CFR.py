@@ -90,8 +90,8 @@ class CFR:
             # 累積後悔値を更新
             if state not in cumulative_regrets:
                 cumulative_regrets[state] = [0] * self.num_actions
-            cumulative_regrets[state] += current_regret_list
-
+            for i in range(self.num_actions):
+                cumulative_regrets[state][i] += current_regret[i]
 
 
         def update_strategy(self, player, state):
