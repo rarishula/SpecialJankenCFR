@@ -18,15 +18,7 @@ class CFR:
                 self.player1_strategy_profile = {}  # プレイヤー1の戦略プロファイル
                 self.player2_strategy_profile = {}  # プレイヤー2の戦略プロファイル
 
-        def get_player2_strategy(self, state):
-                return self.player2_strategy_profile.get(state, [1/3, 1/3, 1/3])  # デフォルト戦略
-        
-        def set_player2_strategy(self, state, strategy):
-                if strategy != self.player2_strategy_profile.get(state, []):
-                    print(f"Player 2 strategy for state {state} changed from {self.player2_strategy_profile.get(state, [])} to {strategy}")
-                    traceback.print_stack()  # スタックトレースを表示
-                    pdb.set_trace()  # デバッグブレークポイント
-                self.player2_strategy_profile[state] = strategy
+
 
         def choose_action(self,strategy):
                 assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
