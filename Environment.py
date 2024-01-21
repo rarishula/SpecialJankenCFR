@@ -15,9 +15,10 @@ class Environment:
 
     def step(self, actions):
         player1_action, player2_action = actions
+        state = self.get_state()
 
 
-        reward = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
+        reward = self.calculate_reward(state,player1_action, player2_action)
         player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
         
 
@@ -84,7 +85,7 @@ class Environment:
             else:
                 return (0, 1)
 
-    def calculate_reward(self,player1_action, player2_action):
+    def calculate_reward(self,state,player1_action, player2_action):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
