@@ -46,7 +46,7 @@ class CFR:
                 
         def calculate_current_regret(self, player, state, actual_action, opponent_action):
             # 実際の行動による報酬を計算
-            actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
+            actual_reward = self.env.calculate_reward(state , actual_action, opponent_action)
             if player == 2:
                 actual_reward *= -1  # プレイヤー2の場合は報酬を反転
         
