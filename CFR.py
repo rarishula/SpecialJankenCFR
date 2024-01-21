@@ -1,5 +1,7 @@
 from Environment import Environment
 import random
+import pdb
+import traceback
 
 class CFR:
         
@@ -15,6 +17,17 @@ class CFR:
                 self.player2_cumulative_regrets = {}  # プレイヤー2の累積後悔値
                 self.player1_strategy_profile = {}  # プレイヤー1の戦略プロファイル
                 self.player2_strategy_profile = {}  # プレイヤー2の戦略プロファイル
+
+        @property
+        def player2_strategy(self):
+                return self._player2_strategy
+
+        @player2_strategy.setter
+        def player2_strategy(self, value):
+                if value != self._player2_strategy:
+                    print(f"Player 2 strategy changed from {self._player2_strategy} to {value}")
+                    traceback.print_stack()  # スタックトレースを表示
+                    pdb.set_trace()  # デバッグブレークポイント
 
         def choose_action(self,strategy):
                 assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
