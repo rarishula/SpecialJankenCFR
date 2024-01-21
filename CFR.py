@@ -92,6 +92,8 @@ class CFR:
                 cumulative_regrets[state] = [0] * self.num_actions
             cumulative_regrets[state][actual_action] += current_regret
 
+        """
+
         def update_strategy(self, player, state):
                 original_strategy = self.player2_strategy_profile.copy()  # コピーを作成
                 
@@ -120,7 +122,24 @@ class CFR:
                 print(f"State: {state}, Player: {player}, Cumulative Regrets: {regrets}, Positive Regret Sum: {positive_regret_sum}")
         
                 return new_strategy
+        """
+
+        def update_strategy(self, player, state):
+            # プレイヤーに応じた戦略プロファイルを選択
+            if player == 1:
+                strategy_profile = self.player1_strategy_profile
+            else:
+                strategy_profile = self.player2_strategy_profile
         
+            # その状態の戦略が未定義の場合、均等な確率で初期化
+            if state not in strategy_profile:
+                strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
+        
+            # 戦略を更新
+            strategy_profile[state] = strategy_profile[state]
+        
+            return strategy_profile[state]
+
         
         def train(self, num_iterations):
             for iteration in range(1, num_iterations + 1):
