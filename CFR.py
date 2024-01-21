@@ -132,7 +132,7 @@ class CFR:
                 # 現在の状態における戦略を取得
                 strategy1 = self.get_strategy(1, state)
                 strategy2 = self.get_strategy(2, state)
-                print(strategy1,strategy2)
+                
         
                 # 戦略に基づいて行動を選択
                 action1 = self.choose_action(strategy1)
@@ -151,7 +151,7 @@ class CFR:
                 if done:
                     break
         
-                print("Step State:", new_state)  # 各ステップの状態を表示
+                
                 state = new_state
         
                 # 固定されていないプレイヤーの戦略を更新
