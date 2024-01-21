@@ -91,7 +91,7 @@ class CFR:
             if state not in cumulative_regrets:
                 cumulative_regrets[state] = [0] * self.num_actions
             for i in range(self.num_actions):
-                cumulative_regrets[state][i] += current_regret[i]
+                cumulative_regrets[state][i] += current_regret_list[i]
 
 
         def update_strategy(self, player, state):
