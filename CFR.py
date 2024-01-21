@@ -152,6 +152,9 @@ class CFR:
         
                 if done:
                     break
+                print("Actions:", actions)
+                print("Player 1 Cumulative Regrets:", self.player1_cumulative_regrets)
+                print("Player 2 Cumulative Regrets:", self.player2_cumulative_regrets)
         
                 
                 state = new_state
