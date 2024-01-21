@@ -99,7 +99,6 @@ class CFR:
                 
                 # プレイヤーに応じた累積後悔値を取得
                 cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
-                """特定の状態における戦略を更新する"""
                 # 状態に対する累積後悔値を取得
                 regrets = cumulative_regrets.get(state, [0] * self.num_actions)
         
