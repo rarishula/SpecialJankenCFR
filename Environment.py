@@ -2,8 +2,6 @@ import random
 
 class Environment:
     def __init__(self,player1_strategy,player2_strategy):
-        self.player1_strategy = player1_strategy
-        self.player2_strategy = player2_strategy
         self.actions = [0, 1, 2]  # グー、チョキ、パー
         self.reset()
 
@@ -34,7 +32,7 @@ class Environment:
         state = self.get_state()
         reward = player1_points
         info = {"player2_reward": player2_points, "result": result}
-        print(state,reward,actions,self.player1_strategy,self.player2_strategy)
+        print(state,reward,actions)
 
         return state, reward, done, info
 
@@ -42,8 +40,8 @@ class Environment:
         last_player1_action = self.last_player1_action if hasattr(self, 'last_player1_action') else 'None'
         last_player2_action = self.last_player2_action if hasattr(self, 'last_player2_action') else 'None'
         action_names = {0: 'Rock', 1: 'Scissors', 2: 'Paper'}
-        print(f"Player 1 Strategy: {self.player1_strategy} | Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
-        print(f"Player 2 Strategy: {self.player2_strategy} | Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
+        print(Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
+        print( Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
 
 
 
