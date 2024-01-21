@@ -33,14 +33,12 @@ class CFR:
 
         def get_strategy(self, player, state):
                 """特定のプレイヤーと状態における現在の戦略を取得または初期化する"""
-                original_strategy = self.player2_strategy_profile.copy()
                 
                 strategy_profile = self.player1_strategy_profile if player == 1 else self.player2_strategy_profile
                 if state not in strategy_profile:
                     # 初期戦略を設定
                     strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
-                if original_strategy != self.player2_strategy_profile:
-                    print(f"get_strategy: Strategy changed from {original_strategy} to {self.player2_strategy_profile}")
+
 
                 return strategy_profile[state]
                 
