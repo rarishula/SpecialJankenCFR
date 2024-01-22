@@ -172,8 +172,7 @@ class CFR:
                 if fixed_player != 2:
                     self.update_cumulative_regrets(2, state, action1, action2)
         
-                if done:
-                    break
+                
                 print("Actions:", actions)
                 print("Player 1 Cumulative Regrets:", self.player1_cumulative_regrets)
                 print("Player 2 Cumulative Regrets:", self.player2_cumulative_regrets)
@@ -186,6 +185,9 @@ class CFR:
                     self.update_strategy(1, state)
                 if fixed_player != 2:
                     self.update_strategy(2, state)
+                
+                if done:
+                    break
 
 
 # 初期戦略を定義（例：各行動に均等な確率を割り当てる）
