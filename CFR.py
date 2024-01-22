@@ -141,12 +141,12 @@ class CFR:
         def train(self, num_iterations):
             for iteration in range(1, num_iterations + 1):
                 # プレイヤー1の戦略を固定し、プレイヤー2の戦略を更新
-                for _ in range(1):
+                for _ in range(10):
                     current_state = self.env.reset()
                     self.play_game(current_state, fixed_player=1)
         
                 # プレイヤー2の戦略を固定し、プレイヤー1の戦略を更新
-                for _ in range(1):
+                for _ in range(10):
                     current_state = self.env.reset()
                     self.play_game(current_state, fixed_player=2)
 
@@ -196,5 +196,5 @@ player2_initial_strategy = [1/3, 1/3, 1/3]
 
 # CFRインスタンスの作成とトレーニングの実行
 cfr = CFR(player1_initial_strategy, player2_initial_strategy)
-cfr.train(1)  # 1000反復でトレーニング
+cfr.train(10)  # 1000反復でトレーニング
 
