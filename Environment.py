@@ -63,7 +63,7 @@ class Environment:
     
         # 勝敗とポイントの決定
         if player1_action == player2_action:
-            return (0, 0)
+            return (1, 1)
         elif (player1_action == PAPER and player2_action == ROCK) or \
              (player1_action == SCISSORS and player2_action == PAPER):
             # プレイヤー1の勝利 (パーでグーを、またはチョキでパーを)
@@ -113,9 +113,11 @@ class Environment:
         elif player1_action == SCISSORS and player2_action == ROCK:
             return 0.25 * (5 if player1_score >= 3 else 2) + 0.75 * (-5 if player2_score >= 4 else -1)
 
-    def determine_game_result(self,player1_score, player2_score):
-    
-        if player1_score >= 5:
+    def determine_game_result(self, player1_score, player2_score):
+        # 両プレイヤーが同時に5点以上に達した場合、引き分けとする
+        if player1_score >= 5 and player2_score >= 5:
+            return "Draw", True
+        elif player1_score >= 5:
             return "Player 1 Wins", True
         elif player2_score >= 5:
             return "Player 2 Wins", True
