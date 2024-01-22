@@ -25,7 +25,7 @@ class Environment:
         self.player1_score += player1_points
         self.player2_score += player2_points
 
-        result, done = self.determine_game_result(self.player1_score, self.player2_score, player1_points, player2_points)
+        result, done = self.determine_game_result(self.player1_score, self.player2_score)
 
         self.last_player1_action = player1_action
         self.last_player2_action = player2_action
@@ -113,13 +113,11 @@ class Environment:
         elif player1_action == SCISSORS and player2_action == ROCK:
             return 0.25 * (5 if player1_score >= 3 else 2) + 0.75 * (-5 if player2_score >= 4 else -1)
 
-    def determine_game_result(self,player1_score, player2_score, player1_points, player2_points):
-        new_player1_score = player1_score + player1_points
-        new_player2_score = player2_score + player2_points
+    def determine_game_result(self,player1_score, player2_score):
     
-        if new_player1_score >= 5:
+        if player1_score >= 5:
             return "Player 1 Wins", True
-        elif new_player2_score >= 5:
+        elif player2_score >= 5:
             return "Player 2 Wins", True
         else:
             return None, False
