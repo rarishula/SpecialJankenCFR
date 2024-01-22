@@ -21,7 +21,7 @@ class CFR:
 
 
         def choose_action(self,strategy):
-                assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
+                assert 0.999 <= sum(strategy) <= 1.001, "The sum of the probabilities in the strategy must be close to 1."
                 
                 ROCK = 0  # グー
                 SCISSORS = 1  # チョキ
