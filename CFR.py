@@ -1,5 +1,7 @@
 from Environment import Environment
 import random
+import pdb
+import traceback
 
 class CFR:
         
@@ -16,8 +18,10 @@ class CFR:
                 self.player1_strategy_profile = {}  # プレイヤー1の戦略プロファイル
                 self.player2_strategy_profile = {}  # プレイヤー2の戦略プロファイル
 
+
+
         def choose_action(self,strategy):
-                assert sum(strategy) == 1, "The sum of the probabilities in the strategy must be 1."
+                assert 0.999 <= sum(strategy) <= 1.001, "The sum of the probabilities in the strategy must be close to 1."
                 
                 ROCK = 0  # グー
                 SCISSORS = 1  # チョキ
@@ -29,27 +33,56 @@ class CFR:
 
         def get_strategy(self, player, state):
                 """特定のプレイヤーと状態における現在の戦略を取得または初期化する"""
+                
                 strategy_profile = self.player1_strategy_profile if player == 1 else self.player2_strategy_profile
                 if state not in strategy_profile:
                     # 初期戦略を設定
                     strategy_profile[state] = [1.0 / self.num_actions] * self.num_actions
+
+
                 return strategy_profile[state]
                 
-        def calculate_current_regret(self, player, state, actual_action, player_score, opponent_action, opponent_score):
-            # 実際の行動による報酬を計算
-            actual_reward = self.env.calculate_reward(actual_action, opponent_action, player_score, opponent_score)
-            if player == 2:
-                actual_reward *= -1  # プレイヤー2の場合は報酬を反転
+        def calculate_current_regret(self, player, state, actual_action, opponent_action):
+            if player == 1:
+                player1_action = actual_action
+                player2_action = opponent_action
+                actual_reward = self.env.calculate_reward(state, player1_action, player2_action)
         
-            # 最大の代替報酬を計算
-            max_counterfactual_reward = max(
-                self.env.calculate_reward(action, opponent_action, player_score, opponent_score) * (-1 if player == 2 else 1)
-                for action in range(self.num_actions) if action != actual_action
-            )
+                best_action = None
+                max_counterfactual_reward = float('-inf')
+                for action in range(self.num_actions):
+                        if action != player1_action:
+                            counterfactual_reward = self.env.calculate_reward(state, action, player2_action)
+                            if counterfactual_reward > max_counterfactual_reward:
+                                max_counterfactual_reward = counterfactual_reward
+                                best_action = action
+            else:
+                player1_action = opponent_action
+                player2_action = actual_action
+                actual_reward = self.env.calculate_reward(state, player1_action, player2_action) * -1
         
-            # 現在の後悔値を計算
+                best_action = None
+                max_counterfactual_reward = float('-inf')
+                for action in range(self.num_actions):
+                        if action != player2_action:
+                            counterfactual_reward = self.env.calculate_reward(state, player1_action, action) * -1
+                            if counterfactual_reward > max_counterfactual_reward:
+                                max_counterfactual_reward = counterfactual_reward
+                                best_action = action
+
+        
             current_regret = max(0, max_counterfactual_reward - actual_reward)
-            return current_regret
+
+            
+            current_regret_list = [0] * self.num_actions  # 各行動に対する後悔値の初期化
+            current_regret_list[best_action] = current_regret
+            
+        
+            return current_regret_list
+
+
+
+
 
         
         
@@ -67,17 +100,19 @@ class CFR:
                 cumulative_regrets = self.player2_cumulative_regrets
         
             # 現在の後悔値を計算
-            current_regret = self.calculate_current_regret(player, state, actual_action, player_score, opponent_action, opponent_score)
+            current_regret_list = self.calculate_current_regret(player, state, actual_action, opponent_action)
         
             # 累積後悔値を更新
             if state not in cumulative_regrets:
                 cumulative_regrets[state] = [0] * self.num_actions
-            cumulative_regrets[state][actual_action] += current_regret
+            for i in range(self.num_actions):
+                cumulative_regrets[state][i] += current_regret_list[i]
+
 
         def update_strategy(self, player, state):
+                
                 # プレイヤーに応じた累積後悔値を取得
                 cumulative_regrets = self.player1_cumulative_regrets if player == 1 else self.player2_cumulative_regrets
-                """特定の状態における戦略を更新する"""
                 # 状態に対する累積後悔値を取得
                 regrets = cumulative_regrets.get(state, [0] * self.num_actions)
         
@@ -96,19 +131,22 @@ class CFR:
                     self.player1_strategy_profile[state] = new_strategy
                 else:
                     self.player2_strategy_profile[state] = new_strategy
+
+                print(f"State: {state}, Player: {player}, Cumulative Regrets: {regrets}, Positive Regret Sum: {positive_regret_sum}")
         
                 return new_strategy
-        
+
+
         
         def train(self, num_iterations):
             for iteration in range(1, num_iterations + 1):
                 # プレイヤー1の戦略を固定し、プレイヤー2の戦略を更新
-                for _ in range(100):
+                for _ in range(10):
                     current_state = self.env.reset()
                     self.play_game(current_state, fixed_player=1)
         
                 # プレイヤー2の戦略を固定し、プレイヤー1の戦略を更新
-                for _ in range(100):
+                for _ in range(10):
                     current_state = self.env.reset()
                     self.play_game(current_state, fixed_player=2)
 
@@ -118,7 +156,7 @@ class CFR:
                 # 現在の状態における戦略を取得
                 strategy1 = self.get_strategy(1, state)
                 strategy2 = self.get_strategy(2, state)
-                print(strategy1,strategy2)
+                
         
                 # 戦略に基づいて行動を選択
                 action1 = self.choose_action(strategy1)
@@ -134,10 +172,12 @@ class CFR:
                 if fixed_player != 2:
                     self.update_cumulative_regrets(2, state, action1, action2)
         
-                if done:
-                    break
+                
+                print("Actions:", actions)
+                print("Player 1 Cumulative Regrets:", self.player1_cumulative_regrets)
+                print("Player 2 Cumulative Regrets:", self.player2_cumulative_regrets)
         
-                print("Step State:", new_state)  # 各ステップの状態を表示
+                
                 state = new_state
         
                 # 固定されていないプレイヤーの戦略を更新
@@ -145,6 +185,9 @@ class CFR:
                     self.update_strategy(1, state)
                 if fixed_player != 2:
                     self.update_strategy(2, state)
+                
+                if done:
+                    break
 
 
 # 初期戦略を定義（例：各行動に均等な確率を割り当てる）
@@ -153,5 +196,5 @@ player2_initial_strategy = [1/3, 1/3, 1/3]
 
 # CFRインスタンスの作成とトレーニングの実行
 cfr = CFR(player1_initial_strategy, player2_initial_strategy)
-cfr.train(1)  # 1000反復でトレーニング
+cfr.train(1000)  # 1000反復でトレーニング
 

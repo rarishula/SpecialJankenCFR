@@ -2,8 +2,6 @@ import random
 
 class Environment:
     def __init__(self,player1_strategy,player2_strategy):
-        self.player1_strategy = player1_strategy
-        self.player2_strategy = player2_strategy
         self.actions = [0, 1, 2]  # グー、チョキ、パー
         self.reset()
 
@@ -17,16 +15,17 @@ class Environment:
 
     def step(self, actions):
         player1_action, player2_action = actions
+        state = self.get_state()
 
 
-        reward = self.calculate_reward(player1_action, player2_action, self.player1_score, self.player2_score)
+        reward = self.calculate_reward(state,player1_action, player2_action)
         player1_points, player2_points = self.determine_janken_winner(player1_action, player2_action)
         
 
         self.player1_score += player1_points
         self.player2_score += player2_points
 
-        result, done = self.determine_game_result(self.player1_score, self.player2_score, player1_points, player2_points)
+        result, done = self.determine_game_result(self.player1_score, self.player2_score)
 
         self.last_player1_action = player1_action
         self.last_player2_action = player2_action
@@ -34,7 +33,7 @@ class Environment:
         state = self.get_state()
         reward = player1_points
         info = {"player2_reward": player2_points, "result": result}
-        print(state,reward,actions,self.player1_strategy,self.player2_strategy)
+        #print(state,reward,actions)
 
         return state, reward, done, info
 
@@ -42,8 +41,8 @@ class Environment:
         last_player1_action = self.last_player1_action if hasattr(self, 'last_player1_action') else 'None'
         last_player2_action = self.last_player2_action if hasattr(self, 'last_player2_action') else 'None'
         action_names = {0: 'Rock', 1: 'Scissors', 2: 'Paper'}
-        print(f"Player 1 Strategy: {self.player1_strategy} | Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
-        print(f"Player 2 Strategy: {self.player2_strategy} | Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
+        #print(f" Chose: {action_names.get(last_player1_action, 'None')} | Score: {self.player1_score}")
+        #print(f" Chose: {action_names.get(last_player2_action, 'None')} | Score: {self.player2_score}")
 
 
 
@@ -64,7 +63,7 @@ class Environment:
     
         # 勝敗とポイントの決定
         if player1_action == player2_action:
-            return (0, 0)
+            return (1, 1)
         elif (player1_action == PAPER and player2_action == ROCK) or \
              (player1_action == SCISSORS and player2_action == PAPER):
             # プレイヤー1の勝利 (パーでグーを、またはチョキでパーを)
@@ -86,10 +85,11 @@ class Environment:
             else:
                 return (0, 1)
 
-    def calculate_reward(self,player1_action, player2_action, player1_score, player2_score):
+    def calculate_reward(self,state,player1_action, player2_action):
         ROCK = 0  # グー
         SCISSORS = 1  # チョキ
         PAPER = 2  # パー
+        player1_score, player2_score = state
     
         # 同じ手の場合、報酬は0点
         if player1_action == player2_action:
@@ -113,13 +113,13 @@ class Environment:
         elif player1_action == SCISSORS and player2_action == ROCK:
             return 0.25 * (5 if player1_score >= 3 else 2) + 0.75 * (-5 if player2_score >= 4 else -1)
 
-    def determine_game_result(self,player1_score, player2_score, player1_points, player2_points):
-        new_player1_score = player1_score + player1_points
-        new_player2_score = player2_score + player2_points
-    
-        if new_player1_score >= 5:
+    def determine_game_result(self, player1_score, player2_score):
+        # 両プレイヤーが同時に5点以上に達した場合、引き分けとする
+        if player1_score >= 5 and player2_score >= 5:
+            return "Draw", True
+        elif player1_score >= 5:
             return "Player 1 Wins", True
-        elif new_player2_score >= 5:
+        elif player2_score >= 5:
             return "Player 2 Wins", True
         else:
             return None, False
