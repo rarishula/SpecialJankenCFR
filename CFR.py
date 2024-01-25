@@ -1,7 +1,7 @@
 from Environment import Environment
 import random
-import pdb
-import traceback
+
+import json
 
 class CFR:
         
@@ -189,6 +189,38 @@ class CFR:
                 if done:
                     break
 
+        def convert_regrets_to_json_format(self, cumulative_regrets):
+            """
+            累積後悔データを整列し、JSON形式に変換する。
+            """
+            json_data = {}
+            # キー (状態) をソート
+            sorted_keys = sorted(cumulative_regrets.keys())
+            for state in sorted_keys:
+                regrets = cumulative_regrets[state]
+                state_key = f"{state[0]}_{state[1]}"
+                json_data[state_key] = regrets
+            return json_data
+
+        def save_data_to_json(self, filename, data):
+            """
+            指定されたファイル名でJSONデータを保存する。
+            """
+            with open(filename, 'w') as file:
+                json.dump(data, file, indent=4)
+
+        def save_cumulative_regrets(self):
+            """
+            player1とplayer2の累積後悔をJSONファイルに保存する。
+            """
+
+            # player1の累積後悔の保存
+            player1_regrets_json = self.convert_regrets_to_json_format(self.player1_cumulative_regrets)
+            self.save_data_to_json('player1_cumulative_regrets.json', player1_regrets_json)
+
+            # player2の累積後悔の保存
+            player2_regrets_json = self.convert_regrets_to_json_format(self.player2_cumulative_regrets)
+            self.save_data_to_json('player2_cumulative_regrets.json', player2_regrets_json)
 
 # 初期戦略を定義（例：各行動に均等な確率を割り当てる）
 player1_initial_strategy = [1/3, 1/3, 1/3]
@@ -198,3 +230,4 @@ player2_initial_strategy = [1/3, 1/3, 1/3]
 cfr = CFR(player1_initial_strategy, player2_initial_strategy)
 cfr.train(1000)  # 1000反復でトレーニング
 
+cfr.save_cumulative_regrets()
